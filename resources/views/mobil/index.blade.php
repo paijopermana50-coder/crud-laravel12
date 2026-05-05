@@ -14,53 +14,92 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-12">
+
                 <div>
                     <h3 class="text-center my-4">DATA MOBIL</h3>
                     <hr>
                 </div>
+
                 <div class="card border-0 shadow-sm rounded">
                     <div class="card-body">
-                       <a href="{{ route('mobil.create') }}" class="btn btn-md btn-success mb-3">Tambah Data</a>
-                        <table class="table table-bordered">
-                            <thead>
+
+                        <a href="{{ route('mobil.create') }}" class="btn btn-success mb-3">
+                            Tambah Data
+                        </a>
+
+                        <table class="table table-bordered table-striped">
+                            <thead class="table-dark text-center">
                                 <tr>
-                                    <th scope="col">GAMBAR</th>
-                                    <th scope="col">NAMA</th>
-                                    <th scope="col">HARGA</th>
-                                    <th scope="col">STOK</th>
-                                    <th scope="col" style="width: 20%">AKSI</th>
+                                    <th>GAMBAR</th>
+                                    <th>NAMA</th>
+                                    <th>HARGA</th>
+                                    <th>STOK</th>
+                                    <th style="width: 20%">AKSI</th>
                                 </tr>
                             </thead>
+
                             <tbody>
                                 @forelse ($mobil as $item)
-                                <tr>
-                                    <td class="text-center">
-                                        <img src="{{ asset('/storage/motor/'.$item->gambar) }}" class="rounded" style="width: 150px">
-                                    </td>
-                                    <td>{{ $item->nama }}</td>
-                                    <td>{{ "Rp " . number_format($item->harga,2,',','.') }}</td>
-                                    <td>{{ $item->stok }}</td>
-                                    <td class="text-center">
-                                        <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('mobil.destroy', $item->id) }}" method="POST">
-                                            <a href="{{ route('mobil.show', $item->id) }}" class="btn btn-sm btn-dark">SHOW</a>
-                                            <a href="{{ route('mobil.edit', $item->id) }}" class="btn btn-sm btn-primary">EDIT</a>
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger">HAPUS</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                @empty
-                                <div class="alert alert-danger">
-                                    Data mobil belum ada.
-                                </div>
-                                @endforelse
+                                    <tr>
+                                        <td class="text-center">
+                                            <img src="{{ asset('storage/mobil/' . $item->gambar) }}"
+                                                class="rounded"
+                                                style="width:150px; height:100px; object-fit:cover;"
+                                                onerror="this.src='https://via.placeholder.com/150x100?text=No+Image'">
+                                        </td>
 
+                                        <td>{{ $item->nama }}</td>
+
+                                        <td>
+                                            Rp {{ number_format($item->harga, 0, ',', '.') }}
+                                        </td>
+
+                                        <td>{{ $item->stok }}</td>
+
+                                        <td class="text-center">
+                                            <form action="{{ route('mobil.destroy', $item->id) }}"
+                                                method="POST"
+                                                onsubmit="return confirm('Apakah Anda Yakin ?');">
+
+                                                <a href="{{ route('mobil.show', $item->id) }}"
+                                                    class="btn btn-sm btn-dark mb-1">
+                                                    SHOW
+                                                </a>
+
+                                                <a href="{{ route('mobil.edit', $item->id) }}"
+                                                    class="btn btn-sm btn-primary mb-1">
+                                                    EDIT
+                                                </a>
+
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button type="submit"
+                                                    class="btn btn-sm btn-danger mb-1">
+                                                    HAPUS
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5">
+                                            <div class="alert alert-danger text-center m-0">
+                                                Data mobil belum ada.
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
-                        {{ $mobil->links() }}
+
+                        <div class="mt-3">
+                            {{ $mobil->links() }}
+                        </div>
+
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -69,26 +108,26 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        //message with sweetalert
         @if(session('success'))
-        Swal.fire({
-            icon: "success",
-            title: "BERHASIL",
-            text: "{{ session('success') }}",
-            showConfirmButton: false,
-            timer: 2000
-        });
-        @elseif(session('error'))
-        Swal.fire({
-            icon: "error",
-            title: "GAGAL!",
-            text: "{{ session('error') }}",
-            showConfirmButton: false,
-            timer: 2000
-        });
+            Swal.fire({
+                icon: 'success',
+                title: 'BERHASIL',
+                text: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'GAGAL',
+                text: '{{ session('error') }}',
+                showConfirmButton: false,
+                timer: 2000
+            });
         @endif
     </script>
 
 </body>
-
 </html>

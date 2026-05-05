@@ -8,8 +8,6 @@ use App\Models\Mobil;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
 
-;
-
 class MobilController extends Controller
 {
     public function index(): View
@@ -107,7 +105,7 @@ class MobilController extends Controller
     public function destroy(string $id): RedirectResponse
     {
         $mobil = Mobil::findOrFail($id);
-        Storage::delete('/mobil/' . $mobil->gambar);
+        Storage::delete('mobil/' . $mobil->gambar);
         $mobil->delete();
         return redirect()->route('mobil.index')->with(['success' => 'Data Berhasil Dihapus!']);
     }
